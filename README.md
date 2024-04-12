@@ -117,5 +117,53 @@ Dalam hal ini, DashMap sangat berguna karena memungkinkan akses konkuren yang am
 Dalam skenario ini, pola Singleton dengan HashMap mungkin sudah cukup dan penggunaan DashMap mungkin terlalu berlebihan karena menambahkan overhead untuk keselamatan thread yang tidak diperlukan.
 
 #### Reflection Publisher-2
+1. In the Model-View Controller (MVC) compound pattern, there is no “Service” and “Repository”. Model in MVC covers both data storage and business logic. Explain based on your understanding of design principles, why we need to separate “Service” and “Repository” from a Model?
 
+Dalam pola desain Model-View-Controller (MVC), Model secara tradisional memang menangani baik logika bisnis maupun penyimpanan data. Namun, seiring berkembangnya aplikasi yang kompleks, seringkali praktik terbaik menyarankan pemisahan tanggung jawab untuk mendukung skala yang lebih besar, pengujian yang lebih baik, dan pemeliharaan yang lebih mudah. Inilah alasan mengapa "Service" dan "Repository" sering kali dipisahkan dari Model:
+
+- Single Responsibility Principle (SRP): Ini adalah prinsip SOLID yang menyatakan bahwa sebuah kelas harus memiliki satu, dan hanya satu, alasan untuk berubah. Dengan memisahkan "Service" (yang menangani logika bisnis) dan "Repository" (yang menangani operasi penyimpanan data) dari Model, setiap kelas dapat berfokus pada satu tanggung jawab.
+
+- Pemisahan Logika Bisnis dari Logika Akses Data: Logika bisnis seringkali cukup rumit dan berubah-ubah, sementara logika akses data cenderung stabil dan berkaitan dengan kinerja operasi CRUD ke database. Dengan memisahkannya, kita bisa mengelola kompleksitas dan perubahan pada masing-masing aspek secara terpisah.
+
+- Testing yang Lebih Mudah: Dengan memisahkan Service dan Repository, kita dapat menguji logika bisnis secara terisolasi tanpa perlu berinteraksi dengan database (atau sumber data lainnya). Hal ini memudahkan pengujian unit dan sering kali menghasilkan kode yang lebih bersih.
+
+- Fleksibilitas dan Scalability: Ketika logika bisnis dan akses data dipisahkan, lebih mudah untuk mengubah salah satunya tanpa mempengaruhi yang lain. Misalnya, jika kita ingin mengganti sumber penyimpanan data, hanya Repository yang perlu diubah, bukan seluruh Model.
+
+- Code Reusability: Kode yang bersih dan terorganisir dengan baik cenderung lebih bisa digunakan kembali. Service dan Repository yang terdefinisi dengan baik dapat digunakan kembali di bagian lain dari aplikasi atau bahkan di aplikasi yang berbeda.
+
+- Decoupling: Pemisahan ini membantu mengurangi ketergantungan antar komponen. Dengan begitu, perubahan pada database atau perubahan pada aturan bisnis tidak menyebabkan efek domino yang memerlukan perubahan luas pada kode.
+
+Singkatnya, Service dan Repository membantu kita mengikuti prinsip-prinsip desain perangkat lunak yang baik dengan memberikan struktur yang lebih bersih, lebih modular, dan lebih mudah untuk dijaga dan dikembangkan. Ini mengarah pada sistem yang lebih robust dan maintainable.
+
+2. What happens if we only use the Model? Explain your imagination on how the interactions between each model (Program, Subscriber, Notification) affect the code complexity for each model?
+Jika kita hanya menggunakan Model tanpa Service dan Repository, interaksi antara setiap model (Program, Subscriber, Notification) bisa meningkatkan kompleksitas kode secara signifikan. Berikut adalah beberapa kemungkinan dampaknya:
+
+- Kompleksitas Model Tinggi: Setiap model akan harus menangani logika bisnis dan akses data yang spesifik. Ini berarti metode untuk operasi CRUD, validasi, dan logika bisnis lainnya akan bercampur dalam satu kelas Model, membuatnya besar dan sulit untuk dimengerti.
+
+- Pengulangan Kode: Tanpa Repository, kode untuk akses data mungkin perlu diulangi di setiap Model. Ini bisa menyebabkan duplikasi yang berlebihan dan potensi inkonsistensi jika perubahan diperlukan.
+
+- Tes yang Sulit: Mengujikan model yang juga menangani akses data akan sulit karena setiap tes akan memerlukan interaksi dengan database atau mock objects yang rumit, yang dapat meningkatkan waktu yang diperlukan untuk tes dan membuat tes lebih rentan terhadap kegagalan karena masalah luar yang tidak terkait.
+
+- Perubahan Menjadi Berisiko: Jika bisnis memerlukan perubahan logika, ini mungkin memerlukan perubahan pada Model yang sama yang mengakses database, meningkatkan risiko bug dan efek samping yang tidak diinginkan karena perubahan tersebut mungkin mempengaruhi cara data disimpan atau diambil.
+
+- Ketergantungan Berlebihan: Model yang berinteraksi langsung satu sama lain mungkin mengembangkan ketergantungan yang kuat. Misalnya, jika model Program perlu mengirim Notification kepada Subscriber, maka ada kemungkinan Program akan langsung berkomunikasi dengan Notification yang juga menangani akses data, membuat susunan ketergantungan yang kompleks dan sulit dipisahkan.
+
+- Pembaruan Menjadi Sulit: Dalam sistem yang hanya menggunakan Model, melakukan pembaruan pada skema database atau aturan bisnis bisa menjadi sangat sulit. Karena logika terkait dengan database dan bisnis tersebar di seluruh Model, perubahan kecil bisa membutuhkan banyak perubahan di berbagai bagian kode.
+
+Dengan hanya menggunakan Model, kita mengorbankan kejelasan, pemisahan tanggung jawab, dan fleksibilitas. Sementara ini mungkin berfungsi untuk aplikasi yang sangat sederhana, untuk aplikasi yang lebih kompleks dan berkembang ini akan menciptakan basis kode yang sulit untuk dikelola dan berisiko tinggi untuk error.
+
+3. Have you explored more about Postman? Tell us how this tool helps you to test your current work. You might want to also list which features in Postman you are interested in or feel like it is helpful to help your Group Project or any of your future software engineering projects.
+Saya telah menggunakan Postman untuk menguji API dalam proyek saya. Ini sangat membantu untuk memastikan bahwa API yang saya kembangkan berfungsi sesuai ekspektasi. Berikut beberapa fitur Postman yang saya temukan berguna:
+
+- Pengujian API: Saya dapat dengan mudah membuat request ke API dan melihat responsnya, memastikan bahwa endpoint bekerja sebagaimana mestinya.
+
+- Environment: Saya bisa menyiapkan environment yang berbeda untuk pengembangan dan produksi, memudahkan saya untuk beralih antara berbagai konfigurasi server tanpa harus mengubah request secara manual.
+
+- Collections: Memungkinkan saya untuk menyimpan dan mengelompokkan request yang sering digunakan. Ini mempermudah saya untuk berbagi request dengan tim dan menjaga agar tetap terorganisir.
+
+- Monitoring: Fitur ini memungkinkan saya untuk memantau API secara berkala untuk memeriksa kesehatan dan ketersediaannya, yang sangat penting untuk aplikasi produk
+
+- Integration: Kemampuan untuk mengintegrasikan dengan sistem lain seperti GitHub, Jenkins, dan Slack sangat berguna untuk mempercepat workflow pengembangan dan berkolaborasi dengan tim
+
+Fitur-fitur ini membuat Postman menjadi alat yang sangat berguna tidak hanya untuk proyek kelompok, tapi juga untuk pengembangan aplikasi kedepannya, hal ini karena Postman sangat membantu untuk memastikan bahwa API yang saya kembangkan bisa digunakan dan mudah untuk dikerjakan secara kolaboratif.
 #### Reflection Publisher-3
