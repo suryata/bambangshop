@@ -50,20 +50,20 @@ You can install Postman via this website: https://www.postman.com/downloads/
 ## Mandatory Checklists (Publisher)
 -   [ ] Clone https://gitlab.com/ichlaffterlalu/bambangshop to a new repository.
 -   **STAGE 1: Implement models and repositories**
-    -   [ ] Commit: `Create Subscriber model struct.`
-    -   [ ] Commit: `Create Notification model struct.`
-    -   [ ] Commit: `Create Subscriber database and Subscriber repository struct skeleton.`
-    -   [ ] Commit: `Implement add function in Subscriber repository.`
-    -   [ ] Commit: `Implement list_all function in Subscriber repository.`
-    -   [ ] Commit: `Implement delete function in Subscriber repository.`
-    -   [ ] Write answers of your learning module's "Reflection Publisher-1" questions in this README.
+    -   [V] Commit: `Create Subscriber model struct.`
+    -   [V] Commit: `Create Notification model struct.`
+    -   [V] Commit: `Create Subscriber database and Subscriber repository struct skeleton.`
+    -   [V] Commit: `Implement add function in Subscriber repository.`
+    -   [V] Commit: `Implement list_all function in Subscriber repository.`
+    -   [V] Commit: `Implement delete function in Subscriber repository.`
+    -   [V] Write answers of your learning module's "Reflection Publisher-1" questions in this README.
 -   **STAGE 2: Implement services and controllers**
-    -   [ ] Commit: `Create Notification service struct skeleton.`
-    -   [ ] Commit: `Implement subscribe function in Notification service.`
-    -   [ ] Commit: `Implement subscribe function in Notification controller.`
-    -   [ ] Commit: `Implement unsubscribe function in Notification service.`
-    -   [ ] Commit: `Implement unsubscribe function in Notification controller.`
-    -   [ ] Write answers of your learning module's "Reflection Publisher-2" questions in this README.
+    -   [V] Commit: `Create Notification service struct skeleton.`
+    -   [V] Commit: `Implement subscribe function in Notification service.`
+    -   [V] Commit: `Implement subscribe function in Notification controller.`
+    -   [V] Commit: `Implement unsubscribe function in Notification service.`
+    -   [V] Commit: `Implement unsubscribe function in Notification controller.`
+    -   [V] Write answers of your learning module's "Reflection Publisher-2" questions in this README.
 -   **STAGE 3: Implement notification mechanism**
     -   [ ] Commit: `Implement update method in Subscriber model to send notification HTTP requests.`
     -   [ ] Commit: `Implement notify function in Notification service to notify each Subscriber.`
@@ -77,7 +77,7 @@ This is the place for you to write reflections:
 ### Mandatory (Publisher) Reflections
 
 #### Reflection Publisher-1
-1. In the Observer pattern diagram explained by the Head First Design Pattern book, Subscriber is defined as an interface. Explain based on your understanding of Observer design patterns, do we still need an interface (or trait in Rust) in this BambangShop case, or a single Model struct is enough?
+1. In the Observer pattern diagram explained by the Head First Design Pattern book, Subscriber is defined as an interface. Explain based on your understanding of Observer design patterns, do we still need an interface (or trait in Rust) in this BambangShop case, or a single Model struct is enough?<br/>
 
 Dalam pola desain Observer, objek yang disebut Subscriber biasanya mewakili entitas yang menerima pembaruan dari subjek ketika terjadi perubahan. Penerapan pola ini dalam bahasa pemrograman seperti Rust sering kali menggunakan trait untuk mendefinisikan interface Subscriber.
 
@@ -89,7 +89,7 @@ Walaupun dalam kasus BambangShop hanya ada satu struct Model yang terlihat, kepu
 
 Secara umum, trait memberikan fleksibilitas dan skalabilitas dalam mendesain sistem yang bisa beradaptasi dengan perubahan atau penambahan fitur di masa depan. Jika BambangShop ingin mempertahankan kemungkinan tersebut, atau memiliki rencana untuk berbagai jenis subscriber, maka penggunaan trait akan lebih baik.
 
-2. id in Program and url in Subscriber is intended to be unique. Explain based on your understanding, is using Vec (list) sufficient or using DashMap (map/dictionary) like we currently use is necessary for this case?
+2. id in Program and url in Subscriber is intended to be unique. Explain based on your understanding, is using Vec (list) sufficient or using DashMap (map/dictionary) like we currently use is necessary for this case?<br/>
 Ketika kita memiliki elemen dengan identitas yang harus unik seperti id dalam Program atau url dalam Subscriber, pilihan struktur data untuk menyimpannya sangat penting terkait dengan efisiensi pencarian, penambahan, dan penghapusan elemen.
 
 Menggunakan Vec atau list mungkin cukup untuk kasus-kasus dengan jumlah elemen yang sangat kecil dan operasi yang jarang terjadi, karena pencarian akan dilakukan secara linier dan efisiensinya rendah; setiap operasi untuk menemukan atau menghapus elemen memerlukan waktu proporsional terhadap jumlah elemen dalam list. Ini mungkin tidak masalah untuk sistem yang tidak membutuhkan skalabilitas atau kinerja tinggi.
@@ -100,7 +100,7 @@ Pertimbangan lainnya adalah keselamatan penggunaan data di lingkungan multithrea
 
 Jadi, jika id atau url perlu dijamin unik dan sistem memerlukan akses yang cepat dan aman di lingkungan multithread, maka menggunakan DashMap akan lebih tepat daripada menggunakan Vec.
 
-3. When programming using Rust, we are enforced by rigorous compiler constraints to make a thread-safe program. In the case of the List of Subscribers (SUBSCRIBERS) static variable, we used the DashMap external library for thread safe HashMap. Explain based on your understanding of design patterns, do we still need DashMap or we can implement Singleton pattern instead?
+3. When programming using Rust, we are enforced by rigorous compiler constraints to make a thread-safe program. In the case of the List of Subscribers (SUBSCRIBERS) static variable, we used the DashMap external library for thread safe HashMap. Explain based on your understanding of design patterns, do we still need DashMap or we can implement Singleton pattern instead?<br/>
 
 Dalam pemrograman Rust, keselamatan thread merupakan aspek penting yang dipastikan oleh sistem jenisnya. Compiler Rust menegakkan kepemilikan dan peminjaman yang aman untuk mencegah kondisi balapan dan bug lainnya yang terkait dengan keselamatan memori, terutama ketika berhadapan dengan konteks multithread.
 
@@ -117,7 +117,7 @@ Dalam hal ini, DashMap sangat berguna karena memungkinkan akses konkuren yang am
 Dalam skenario ini, pola Singleton dengan HashMap mungkin sudah cukup dan penggunaan DashMap mungkin terlalu berlebihan karena menambahkan overhead untuk keselamatan thread yang tidak diperlukan.
 
 #### Reflection Publisher-2
-1. In the Model-View Controller (MVC) compound pattern, there is no “Service” and “Repository”. Model in MVC covers both data storage and business logic. Explain based on your understanding of design principles, why we need to separate “Service” and “Repository” from a Model?
+1. In the Model-View Controller (MVC) compound pattern, there is no “Service” and “Repository”. Model in MVC covers both data storage and business logic. Explain based on your understanding of design principles, why we need to separate “Service” and “Repository” from a Model?<br/>
 
 Dalam pola desain Model-View-Controller (MVC), Model secara tradisional memang menangani baik logika bisnis maupun penyimpanan data. Namun, seiring berkembangnya aplikasi yang kompleks, seringkali praktik terbaik menyarankan pemisahan tanggung jawab untuk mendukung skala yang lebih besar, pengujian yang lebih baik, dan pemeliharaan yang lebih mudah. Inilah alasan mengapa "Service" dan "Repository" sering kali dipisahkan dari Model:
 
@@ -135,7 +135,7 @@ Dalam pola desain Model-View-Controller (MVC), Model secara tradisional memang m
 
 Singkatnya, Service dan Repository membantu kita mengikuti prinsip-prinsip desain perangkat lunak yang baik dengan memberikan struktur yang lebih bersih, lebih modular, dan lebih mudah untuk dijaga dan dikembangkan. Ini mengarah pada sistem yang lebih robust dan maintainable.
 
-2. What happens if we only use the Model? Explain your imagination on how the interactions between each model (Program, Subscriber, Notification) affect the code complexity for each model?
+2. What happens if we only use the Model? Explain your imagination on how the interactions between each model (Program, Subscriber, Notification) affect the code complexity for each model?<br/>
 Jika kita hanya menggunakan Model tanpa Service dan Repository, interaksi antara setiap model (Program, Subscriber, Notification) bisa meningkatkan kompleksitas kode secara signifikan. Berikut adalah beberapa kemungkinan dampaknya:
 
 - Kompleksitas Model Tinggi: Setiap model akan harus menangani logika bisnis dan akses data yang spesifik. Ini berarti metode untuk operasi CRUD, validasi, dan logika bisnis lainnya akan bercampur dalam satu kelas Model, membuatnya besar dan sulit untuk dimengerti.
@@ -152,7 +152,7 @@ Jika kita hanya menggunakan Model tanpa Service dan Repository, interaksi antara
 
 Dengan hanya menggunakan Model, kita mengorbankan kejelasan, pemisahan tanggung jawab, dan fleksibilitas. Sementara ini mungkin berfungsi untuk aplikasi yang sangat sederhana, untuk aplikasi yang lebih kompleks dan berkembang ini akan menciptakan basis kode yang sulit untuk dikelola dan berisiko tinggi untuk error.
 
-3. Have you explored more about Postman? Tell us how this tool helps you to test your current work. You might want to also list which features in Postman you are interested in or feel like it is helpful to help your Group Project or any of your future software engineering projects.
+3. Have you explored more about Postman? Tell us how this tool helps you to test your current work. You might want to also list which features in Postman you are interested in or feel like it is helpful to help your Group Project or any of your future software engineering projects.<br/>
 Saya telah menggunakan Postman untuk menguji API dalam proyek saya. Ini sangat membantu untuk memastikan bahwa API yang saya kembangkan berfungsi sesuai ekspektasi. Berikut beberapa fitur Postman yang saya temukan berguna:
 
 - Pengujian API: Saya dapat dengan mudah membuat request ke API dan melihat responsnya, memastikan bahwa endpoint bekerja sebagaimana mestinya.
@@ -166,4 +166,5 @@ Saya telah menggunakan Postman untuk menguji API dalam proyek saya. Ini sangat m
 - Integration: Kemampuan untuk mengintegrasikan dengan sistem lain seperti GitHub, Jenkins, dan Slack sangat berguna untuk mempercepat workflow pengembangan dan berkolaborasi dengan tim
 
 Fitur-fitur ini membuat Postman menjadi alat yang sangat berguna tidak hanya untuk proyek kelompok, tapi juga untuk pengembangan aplikasi kedepannya, hal ini karena Postman sangat membantu untuk memastikan bahwa API yang saya kembangkan bisa digunakan dan mudah untuk dikerjakan secara kolaboratif.
+
 #### Reflection Publisher-3
