@@ -65,11 +65,11 @@ You can install Postman via this website: https://www.postman.com/downloads/
     -   [V] Commit: `Implement unsubscribe function in Notification controller.`
     -   [V] Write answers of your learning module's "Reflection Publisher-2" questions in this README.
 -   **STAGE 3: Implement notification mechanism**
-    -   [ ] Commit: `Implement update method in Subscriber model to send notification HTTP requests.`
-    -   [ ] Commit: `Implement notify function in Notification service to notify each Subscriber.`
-    -   [ ] Commit: `Implement publish function in Program service and Program controller.`
-    -   [ ] Commit: `Edit Product service methods to call notify after create/delete.`
-    -   [ ] Write answers of your learning module's "Reflection Publisher-3" questions in this README.
+    -   [V] Commit: `Implement update method in Subscriber model to send notification HTTP requests.`
+    -   [V] Commit: `Implement notify function in Notification service to notify each Subscriber.`
+    -   [V] Commit: `Implement publish function in Program service and Program controller.`
+    -   [V] Commit: `Edit Product service methods to call notify after create/delete.`
+    -   [V] Write answers of your learning module's "Reflection Publisher-3" questions in this README.
 
 ## Your Reflections
 This is the place for you to write reflections:
@@ -168,3 +168,49 @@ Saya telah menggunakan Postman untuk menguji API dalam proyek saya. Ini sangat m
 Fitur-fitur ini membuat Postman menjadi alat yang sangat berguna tidak hanya untuk proyek kelompok, tapi juga untuk pengembangan aplikasi kedepannya, hal ini karena Postman sangat membantu untuk memastikan bahwa API yang saya kembangkan bisa digunakan dan mudah untuk dikerjakan secara kolaboratif.
 
 #### Reflection Publisher-3
+1. Observer Pattern has two variations: Push model (publisher pushes data to subscribers) and Pull model (subscribers pull data from publisher). In this tutorial case, which variation of Observer Pattern that we use?<br/>
+Dalam kasus tutorial ini, terutama melihat bagaimana Subscriber menerima pemberitahuan, kita menggunakan variasi Push model dari Observer Pattern. Dalam model ini, Publisher (dalam konteks kita, bisa jadi merupakan bagian dari NotificationService) bertanggung jawab untuk mengirimkan atau "mendorong" data ke Subscriber setiap kali ada pembaruan.
+
+Ini berbeda dengan model Pull, di mana Subscriber secara periodik memeriksa atau "menarik" pembaruan dari Publisher. Dalam model Push, Subscriber tidak perlu mengetahui kapan harus memeriksa pembaruan, karena Publisher secara aktif menginformasikan kepada Subscriber ketika data tersedia.
+
+Dalam kasus kita, ketika produk baru ditambahkan atau diperbarui, sistem akan "mendorong" pemberitahuan ke semua Subscriber yang relevan tanpa Subscriber perlu meminta pembaruan tersebut secara berkala. Ini membuat desain lebih efisien dalam hal lalu lintas jaringan, karena data hanya dikirimkan ketika benar-benar ada sesuatu yang baru atau telah berubah.
+
+2.What are the advantages and disadvantages of using the other variation of Observer Pattern for this tutorial case? (example: if you answer Q1 with Push, then imagine if we used Pull)<br/>
+
+Jika kita menggunakan model Pull dalam kasus tutorial yang telah dibahas, berikut ini adalah kelebihan dan kekurangannya:
+
+Kelebihan Model Pull<br/>
+
+- Kontrol yang Lebih Besar untuk Subscriber<br/>
+Subscriber memiliki kontrol penuh atas kapan mereka mengambil data. Ini bisa berguna jika Subscriber memiliki sumber daya yang terbatas atau jika ingin mengontrol beban kerja mereka sendiri.
+
+- Efisiensi Data<br/>
+Subscriber hanya meminta data ketika mereka siap untuk mengolahnya, yang berarti data tidak dikirimkan secara otomatis dan berpotensi tidak digunakan.
+
+- Kebaruan Data<br/>
+Ketika Subscriber meminta data, mereka dijamin mendapatkan data terbaru yang tersedia pada saat itu.
+
+Kekurangan Model Pull<br/>
+
+- Overhead Jaringan yang Tinggi<br/>
+Jika Subscriber sering memeriksa pembaruan, hal ini dapat menyebabkan banyak permintaan yang tidak perlu ke server, yang bisa meningkatkan beban pada jaringan dan server.
+
+- Pembaruan yang Lambat<br/>
+Subscriber mungkin tidak segera menerima pembaruan karena mereka hanya akan menyadarinya setelah melakukan permintaan berikutnya, yang berarti ada latensi antara saat sebuah peristiwa terjadi dan saat Subscriber mengetahuinya.
+
+- Penggunaan Sumber Daya yang Tidak Efisien<br/>
+Model Pull bisa menyebabkan Subscriber menggunakan lebih banyak sumber daya karena mereka harus terus memeriksa pembaruan secara aktif, yang mungkin tidak perlu jika perubahan jarang terjadi.<br/>
+
+Dalam konteks tutorial ini, menggunakan model Pull mungkin tidak sesuai jika tujuannya adalah untuk memberikan pemberitahuan secepat mungkin kepada Subscriber tentang perubahan produk. Model Push cenderung lebih sesuai dalam kasus di mana kita ingin memastikan Subscriber segera mengetahui perubahan tanpa harus memikirkan kapan harus membuat permintaan untuk informasi tersebut.
+
+3. Explain what will happen to the program if we decide to not use multi-threading in the notification process.<br/>
+Jika kita memutuskan untuk tidak menggunakan multi-threading dalam proses notifikasi, berikut ini adalah beberapa dampak yang mungkin terjadi pada program:
+
+- Penundaan dalam Pengiriman Notifikasi<br/>
+Tanpa multi-threading, proses pengiriman notifikasi akan berjalan secara sekuensial. Artinya, notifikasi ke subscriber berikutnya hanya akan dikirim setelah notifikasi sebelumnya selesai diproses. Hal ini dapat menyebabkan penundaan signifikan jika ada banyak subscriber atau jika proses pengiriman notifikasi membutuhkan waktu yang lama.
+
+- Responsivitas Aplikasi Menurun<br/>
+Karena proses notifikasi dilakukan secara sekuensial dalam satu thread, aplikasi mungkin menjadi kurang responsif. Ini terutama terjadi jika aplikasi juga menangani permintaan lain atau tugas-tugas di thread yang sama. Pengguna aplikasi mungkin mengalami keterlambatan atau aplikasi tampak "membeku" selama proses notifikasi berlangsung.
+
+- Skalabilitas Terbatas<br/>
+Seiring dengan bertambahnya jumlah subscriber, beban pada proses notifikasi akan meningkat. Tanpa kemampuan untuk memproses notifikasi secara paralel, meningkatkan skalabilitas aplikasi akan menjadi tantangan. Aplikasi mungkin akan kesulitan menangani beban kerja yang lebih besar tanpa mengalami penurunan kinerja.
